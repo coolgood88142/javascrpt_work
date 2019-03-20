@@ -1,0 +1,19 @@
+{
+  "name": "javascript_work",
+  "version": "1.0.0",
+  "description": "this is javascript work",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack --watch --mode development"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.3.1"
+  },
+  "devDependencies": {
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  }
+}
