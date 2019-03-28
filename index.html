@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+</head>
+<style>
+	.img-thumbnail{
+		width:36px;
+		height:36px;
+	}
+</style>
+<body>
+	<h2>待辦清單</h2>
+	<div id="add_item">
+		<input type="textbox" id="item" name="item"/>
+		<input type="button" class="img-thumbnail" id="add" name="add" value="V" onClick="add_item()"/>
+	</div>
+	<h3>------------------------------------</h3>
+	<div id="item_list">
+		<table id="item_table">
+			<tr id="item0">
+				<td><input type="button" class="img-thumbnail" id="success" name="success" value="V" onClick="success_item()"/></td>
+				<td>7點~8點晨跑</td>
+				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item()"/></td>
+				<td><input type="button" class="img-thumbnail" id="delete" name="delete_item" value="X" onClick="delete_item()"/></td>
+			</tr>
+			<tr id="item1">
+				<td><input type="button" class="img-thumbnail" id="success" name="success" value="V" onClick="success_item()"/></td>
+				<td>8點~9點準備上班</td>
+				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item()"/></td>
+				<td><input type="button" class="img-thumbnail" id="delete" name="delete" value="X" onClick="delete_item()" /></td>
+			</tr>
+		</table>
+	</div>
+</body>
+<script language="JavaScript">
+function add_item(){
+	let item = document.getElementById("item").value;
+	let table_length = document.getElementById("item_table").rows.length;
+	let now_count = table_length - 1;
+	
+    let tr = document.getElementById("item_table").insertRow(table_length);
+	tr.setAttribute("id","item"+now_count);
+    let td = tr.insertCell(tr.cells.length);
+    td.innerHTML = '<input type="button" class="img-thumbnail" id="success" name="success" value="V" onClick="success_item()"/>';
+	
+	td = tr.insertCell(tr.cells.length);
+	td.innerHTML = item;
+	
+	td = tr.insertCell(tr.cells.length);
+	td.innerHTML = '<img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item()"/>';
+	
+	td = tr.insertCell(tr.cells.length);
+	td.innerHTML = '<input type="button" class="img-thumbnail" id="delete" name="delete_item" value="X" onClick="delete_item()"/>';
+}
+
+function success_item(){
+
+}
+
+function update_item(){
+
+}
+
+function delete_item(){ 
+	this.parent().parent().remove(); 
+}
+</script>
+</html>
