@@ -21,14 +21,16 @@
 			<tr id="item0">
 				<td><input type="button" class="img-thumbnail" id="success" name="success" value="V" onClick="success_item()"/></td>
 				<td>7點~8點晨跑</td>
-				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item()"/></td>
-				<td><input type="button" class="img-thumbnail" id="delete" name="delete_item" value="X" onClick="delete_item()"/></td>
+				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(1)"/></td>
+				<td><input type="button" class="img-thumbnail" id="delete" name="delete_item" value="X" onClick="delete_item(0)"/></td>
+				<input type="hidden" id="isUpdate" name="isUpdate" value="false"/>
 			</tr>
 			<tr id="item1">
 				<td><input type="button" class="img-thumbnail" id="success" name="success" value="V" onClick="success_item()"/></td>
 				<td>8點~9點準備上班</td>
-				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item()"/></td>
-				<td><input type="button" class="img-thumbnail" id="delete" name="delete" value="X" onClick="delete_item()" /></td>
+				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(1)"/></td>
+				<td><input type="button" class="img-thumbnail" id="delete" name="delete" value="X" onClick="delete_item(1)" /></td>
+				<input type="hidden" id="isUpdate" name="isUpdate" value="false"/>
 			</tr>
 		</table>
 	</div>
@@ -48,22 +50,35 @@ function add_item(){
 	td.innerHTML = item;
 	
 	td = tr.insertCell(tr.cells.length);
-	td.innerHTML = '<img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item()"/>';
+	td.innerHTML = '<img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item('+table_length+')"/>';
 	
 	td = tr.insertCell(tr.cells.length);
-	td.innerHTML = '<input type="button" class="img-thumbnail" id="delete" name="delete_item" value="X" onClick="delete_item()"/>';
+	td.innerHTML = '<input type="button" class="img-thumbnail" id="delete" name="delete_item" value="X" onClick="delete_item('+table_length+')"/>';
+	
+	tr.innerHTML = tr.innerHTML + '<input type="hidden" id="isUpdate" name="isUpdate" value="false"/>';
 }
 
 function success_item(){
 
 }
 
-function update_item(){
-
+function update_item(count){
+	let item_table = document.getElementById("item_table");
+	let row = item_table.rows[count];
+	let td1_obj = row.cells[1];
+	let isUpdate = row.querySelector("input[name='isUpdate']");
+	if(isUpdate.value == 'false'){
+		td1_obj.innerHTML = '<input type="textbox" id="update" name="update" value="'+td1_obj.innerHTML+'"/>';
+		row.querySelector("input[name='isUpdate']").value = 'true';
+	}else{
+		let obj_val = td1_obj.querySelector("input[name='update']").value;
+		td1_obj.innerHTML = obj_val;
+		row.querySelector("input[name='isUpdate']").value = 'false';
+	}
 }
 
-function delete_item(){ 
-	this.parent().parent().remove(); 
+function delete_item(count){ 
+	document.getElementById("item_table").deleteRow(count);
 }
 </script>
 </html>

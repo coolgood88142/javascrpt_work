@@ -1,2 +1,2 @@
-const style = require('css');
-console.log(style);
+require('bootstrap');
+require('jquery');
