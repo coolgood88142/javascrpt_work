@@ -13,38 +13,47 @@
 	<h2>待辦清單</h2>
 	<div id="add_item">
 		<input type="textbox" id="item" name="item"/>
-		<input type="button" class="img-thumbnail" id="add" name="add" value="V" onClick="add_item()"/>
+		<img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="add" name="add" onClick="add_item()"/>
 	</div>
 	<h3>------------------------------------</h3>
 	<div id="item_list">
 		<table id="item_table">
 			<tr id="item0">
-				<td><input type="button" class="img-thumbnail" id="success" name="success" value="V" onClick="success_item()"/></td>
+				<td><img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="success" name="success" onClick="success_item(0)"/></td>
 				<td>7點~8點晨跑</td>
-				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(1)"/></td>
-				<td><input type="button" class="img-thumbnail" id="delete" name="delete_item" value="X" onClick="delete_item(0)"/></td>
+				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(0)"/></td>
+				<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(0)"/></td>
 				<input type="hidden" id="isUpdate" name="isUpdate" value="false"/>
 			</tr>
 			<tr id="item1">
-				<td><input type="button" class="img-thumbnail" id="success" name="success" value="V" onClick="success_item()"/></td>
+				<td><img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="success" name="success" onClick="success_item(0)"/></td>
 				<td>8點~9點準備上班</td>
 				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(1)"/></td>
-				<td><input type="button" class="img-thumbnail" id="delete" name="delete" value="X" onClick="delete_item(1)" /></td>
+				<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(1)"/></td>
 				<input type="hidden" id="isUpdate" name="isUpdate" value="false"/>
 			</tr>
 		</table>
 	</div>
+	<h3>------------------------------------</h3>
+	<h2>已完成</h2>
+	<div id="success_item">
+		<table id="success_table">
+			<tr id="su_item0">
+				<td><input type="textbox" id="success_item" name="success_item" value="5點~6點準備起床盥洗"/></td>
+				<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_SuccessItem(0)"/></td>
+			</tr>
+		</table>
+	<div>
 </body>
 <script language="JavaScript">
 function add_item(){
 	let item = document.getElementById("item").value;
 	let table_length = document.getElementById("item_table").rows.length;
-	let now_count = table_length - 1;
 	
     let tr = document.getElementById("item_table").insertRow(table_length);
-	tr.setAttribute("id","item"+now_count);
+	tr.setAttribute("id","item"+table_length);
     let td = tr.insertCell(tr.cells.length);
-    td.innerHTML = '<input type="button" class="img-thumbnail" id="success" name="success" value="V" onClick="success_item()"/>';
+    td.innerHTML = '<img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="success" name="success" onClick="success_item('+table_length+')"/>';
 	
 	td = tr.insertCell(tr.cells.length);
 	td.innerHTML = item;
@@ -53,13 +62,24 @@ function add_item(){
 	td.innerHTML = '<img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item('+table_length+')"/>';
 	
 	td = tr.insertCell(tr.cells.length);
-	td.innerHTML = '<input type="button" class="img-thumbnail" id="delete" name="delete_item" value="X" onClick="delete_item('+table_length+')"/>';
+	td.innerHTML = '<img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item('+table_length+')"/>';
 	
 	tr.innerHTML = tr.innerHTML + '<input type="hidden" id="isUpdate" name="isUpdate" value="false"/>';
 }
 
-function success_item(){
+function success_item(count){
+	let now_text = document.getElementById("item_table").rows[count].cells[1].innerHTML;
+	let table_length = document.getElementById("success_table").rows.length;
+	
+	let tr = document.getElementById("success_table").insertRow(table_length);
+	tr.setAttribute("id","su_item"+table_length);
+	let td = tr.insertCell(tr.cells.length);
+    td.innerHTML = '<td><input type="textbox" id="success_item" name="success_item" value="'+now_text+'"/></td>';
+	
+	td = tr.insertCell(tr.cells.length);
+	td.innerHTML = '<img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_SuccessItem('+table_length+')"/>';
 
+	delete_item(count);
 }
 
 function update_item(count){
@@ -77,8 +97,38 @@ function update_item(count){
 	}
 }
 
-function delete_item(count){ 
+function delete_item(count){
+	let item_count = document.getElementById("item_table").rows.length;
+	let now_count = count+1;
+	if(item_count>now_count){
+		let row = item_count - now_count;
+		let j = 1;
+		for(var i=row; i>0; i--){
+			let update_count = count+j;
+			let update_tr = document.getElementById("item_table").rows[update_count];
+			update_tr.cells[0].innerHTML = '<img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="success" name="success" onClick="success_item('+(update_count-1)+')"/>';
+			update_tr.cells[2].innerHTML = '<img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item('+(update_count-1)+')"/>';
+			update_tr.cells[3].innerHTML = '<img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item('+(update_count-1)+')"/>';
+			j++;
+		}
+	}
 	document.getElementById("item_table").deleteRow(count);
+}
+
+function delete_SuccessItem(count){
+	let item_count = document.getElementById("success_table").rows.length;
+	let now_count = count+1;
+	if(item_count>now_count){
+		let row = item_count - now_count;
+		let j = 1;
+		for(var i=row; i>0; i--){
+			let update_count = count+j;
+			let update_tr = document.getElementById("success_table").rows[update_count];
+			update_tr.cells[1].innerHTML = '<img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_SuccessItem('+(update_count-1)+')"/>';
+			j++;
+		}
+	}
+	document.getElementById("success_table").deleteRow(count);
 }
 </script>
 </html>
