@@ -8,6 +8,9 @@
 		width:36px;
 		height:36px;
 	}
+	#su_text{
+		text-decoration:line-through;
+	}
 </style>
 <body>
 	<h2>待辦清單</h2>
@@ -19,14 +22,14 @@
 	<div id="item_list">
 		<table id="item_table">
 			<tr id="item0">
-				<td><img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="success" name="success" onClick="success_item(0)"/></td>
+				<td><input type="checkbox" id="success" name="success" onClick="success_item(0)"/></td>
 				<td>7點~8點晨跑</td>
 				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(0)"/></td>
 				<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(0)"/></td>
 				<input type="hidden" id="isUpdate" name="isUpdate" value="false"/>
 			</tr>
 			<tr id="item1">
-				<td><img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="success" name="success" onClick="success_item(0)"/></td>
+				<td><input type="checkbox" id="success" name="success" onClick="success_item(0)"/></td>
 				<td>8點~9點準備上班</td>
 				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(1)"/></td>
 				<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(1)"/></td>
@@ -39,7 +42,9 @@
 	<div id="success_item">
 		<table id="success_table">
 			<tr id="su_item0">
-				<td>5點~6點準備起床盥洗</td>
+				<td><input type="checkbox" id="success" name="success" onClick="success_item(0)" checked/></td>
+				<td id="su_text">5點~6點準備起床盥洗</td>
+				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(1)"/></td>
 				<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_SuccessItem(0)"/></td>
 			</tr>
 		</table>
@@ -47,24 +52,43 @@
 </body>
 <script language="JavaScript">
 function add_item(){
+	let item_table = document.getElementById("item_table");
 	let item = document.getElementById("item").value;
-	let table_length = document.getElementById("item_table").rows.length;
+	let tr = document.createElement("tr");
 	
-    let tr = document.getElementById("item_table").insertRow(table_length);
-	tr.setAttribute("id","item"+table_length);
-    let td = tr.insertCell(tr.cells.length);
-    td.innerHTML = '<img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="success" name="success" onClick="success_item('+table_length+')"/>';
-
-	td = tr.insertCell(tr.cells.length);
-	td.innerHTML = item;
+	//用陣列組欄位內容
+	let success_item = document.createElement("input");
+	success_item.setAttribute("type", "checkbox");
+	success_item.setAttribute("id", "success");
+	success_item.setAttribute("name", "success");
+	success_item.setAttribute("onClick", "success_item()");
 	
-	td = tr.insertCell(tr.cells.length);
-	td.innerHTML = '<img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item('+table_length+')"/>';
+	let item_text = document.createTextNode(item);
 	
-	td = tr.insertCell(tr.cells.length);
-	td.innerHTML = '<img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item('+table_length+')"/>';
+	let update_item = document.createElement("img");
+	update_item.setAttribute("src", "./assets/images/pencil.png");
+	update_item.setAttribute("id", "pencil");
+	update_item.setAttribute("name", "pencil");
+	update_item.setAttribute("class", "img-thumbnail");
+	update_item.setAttribute("onClick", "update_item()");
 	
-	tr.innerHTML = tr.innerHTML + '<input type="hidden" id="isUpdate" name="isUpdate" value="false"/>';
+	let delete_item = document.createElement("img");
+	delete_item.setAttribute("src", "./assets/images/delete.png");
+	delete_item.setAttribute("id", "delete");
+	delete_item.setAttribute("name", "delete");
+	delete_item.setAttribute("class", "img-thumbnail");
+	delete_item.setAttribute("onClick", "delete_item()");
+	
+	let colums = [success_item,item_text,update_item,delete_item];
+	
+	//迴圈跑陣列新增至table裡
+	for(var i=0; i<colums.length; i++){
+		let td = document.createElement("td");
+		td.appendChild(colums[i]);
+		tr.appendChild(td);
+	}
+	
+	item_table.appendChild(tr);
 }
 
 function success_item(count){
@@ -106,7 +130,7 @@ function delete_item(count){
 		for(var i=row; i>0; i--){
 			let update_count = count+j;
 			let update_tr = document.getElementById("item_table").rows[update_count];
-			update_tr.cells[0].innerHTML = '<img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="success" name="success" onClick="success_item('+(update_count-1)+')"/>';
+			update_tr.cells[0].innerHTML = '<input type="checkbox" id="success" name="success" onClick="success_item('+(update_count-1)+')"/>';
 			update_tr.cells[2].innerHTML = '<img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item('+(update_count-1)+')"/>';
 			update_tr.cells[3].innerHTML = '<img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item('+(update_count-1)+')"/>';
 			j++;
