@@ -39,7 +39,7 @@
 	<div id="success_item">
 		<table id="success_table">
 			<tr id="su_item0">
-				<td><input type="textbox" id="success_item" name="success_item" value="5點~6點準備起床盥洗"/></td>
+				<td>5點~6點準備起床盥洗</td>
 				<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_SuccessItem(0)"/></td>
 			</tr>
 		</table>
@@ -54,7 +54,7 @@ function add_item(){
 	tr.setAttribute("id","item"+table_length);
     let td = tr.insertCell(tr.cells.length);
     td.innerHTML = '<img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="success" name="success" onClick="success_item('+table_length+')"/>';
-	
+
 	td = tr.insertCell(tr.cells.length);
 	td.innerHTML = item;
 	
@@ -74,7 +74,7 @@ function success_item(count){
 	let tr = document.getElementById("success_table").insertRow(table_length);
 	tr.setAttribute("id","su_item"+table_length);
 	let td = tr.insertCell(tr.cells.length);
-    td.innerHTML = '<td><input type="textbox" id="success_item" name="success_item" value="'+now_text+'"/></td>';
+    td.innerHTML = '<td>'+now_text+'</td>';
 	
 	td = tr.insertCell(tr.cells.length);
 	td.innerHTML = '<img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_SuccessItem('+table_length+')"/>';
