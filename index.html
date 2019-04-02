@@ -90,7 +90,7 @@ function add_item(){
 	}
 	
 	item_table.firstElementChild.appendChild(tr);
-	item = "";
+	document.getElementById("item").value = "";
 }
 
 function update_item(obj){
@@ -120,6 +120,9 @@ function success_item(obj){
 		let success_table = document.getElementById("success_table");
 		let tr = obj.closest('tr');
 		tr.setAttribute("id", "su_item"+success_table.rows.length);
+		
+		let su_text = tr.cells[1];
+		su_text.setAttribute("class", "su_text");
 		success_table.firstElementChild.appendChild(tr);
 	}else{
 		let item_table = document.getElementById("item_table");
