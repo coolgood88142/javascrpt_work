@@ -3,7 +3,11 @@
 <head>
 	<meta charset="utf-8">
 </head>
+<script src="./bundle.js"></script>
 <style>
+	#title{
+	  font-family:'微軟正黑體';
+	}
 	.img-thumbnail{
 		width:36px;
 		height:36px;
@@ -13,39 +17,49 @@
 	}
 </style>
 <body>
-	<h2>待辦清單</h2>
-	<div id="add_item">
-		<input type="textbox" id="item" name="item"/>
-		<img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="add" name="add" onClick="add_item()"/>
-	</div>
-	<h3>------------------------------------</h3>
-	<div id="item_list">
-		<table id="item_table">
-			<tr id="item0">
-				<td><input type="checkbox" id="success" name="success" onClick="success_item(this)"/></td>
-				<td>7點~8點晨跑</td>
-				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(this)"/></td>
-				<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(this)"/></td>
-			</tr>
-			<tr id="item1">
-				<td><input type="checkbox" id="success" name="success" onClick="success_item(this)"/></td>
-				<td>8點~9點準備上班</td>
-				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(this)"/></td>
-				<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(this)"/></td>
-			</tr>
-		</table>
-	</div>
-	<h3>------------------------------------</h3>
-	<h2>已完成</h2>
-	<div id="success_list">
-		<table id="success_table">
-			<tr id="su_item0">
-				<td><input type="checkbox" id="success" name="success" onClick="success_item(this)" checked/></td>
-				<td class="su_text">5點~6點準備起床盥洗</td>
-				<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(this)"/></td>
-				<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(this)"/></td>
-			</tr>
-		</table>
+	<div class="jumbotron vertical-center">
+		<div class="container" style="width: 500px;">
+			<div class="row align-items-center">
+				<h2 id="title" class="text-center text-black font-weight-bold">待辦清單</h2>
+				<div class="row align-items-center">
+					<div id="accordion">  
+						<div id="add_item">
+							<input type="textbox" id="item" name="item"/>
+							<img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="add" name="add" onClick="add_item()"/>
+						</div>
+						<h3>------------------------------------</h3>
+						<div id="item_list">
+							<table id="item_table">
+								<tr id="item0">
+									<td><input type="checkbox" id="success" name="success" onClick="success_item(this)"/></td>
+									<td>7點~8點晨跑</td>
+									<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(this)"/></td>
+									<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(this)"/></td>
+								</tr>
+								<tr id="item1">
+									<td><input type="checkbox" id="success" name="success" onClick="success_item(this)"/></td>
+									<td>8點~9點準備上班</td>
+									<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(this)"/></td>
+									<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(this)"/></td>
+								</tr>
+							</table>
+						</div>
+						<h3>------------------------------------</h3>
+						<h2>已完成</h2>
+						<div id="success_list">
+							<table id="success_table">
+								<tr id="su_item0">
+									<td><input type="checkbox" id="success" name="success" onClick="success_item(this)" checked/></td>
+									<td class="su_text">5點~6點準備起床盥洗</td>
+									<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(this)"/></td>
+									<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(this)"/></td>
+								</tr>
+							</table>
+						<div>
+					<div>
+				<div>
+			<div>
+		<div>
 	<div>
 </body>
 <script language="JavaScript">
