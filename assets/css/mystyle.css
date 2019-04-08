@@ -1,0 +1,32 @@
+.vertical-center {
+	min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+	min-height: 100vh; /* These two lines are counted as one :-)       */
+
+	display: flex;
+	align-items: center; 
+}
+.jumbotron{ 
+	height:100%;
+	width:100%;
+}
+.item_text{
+	font-family:"·L³n¥¿¶ÂÅé";
+}
+.title{
+	margin-bottom: 20px;
+}
+.img-thumbnail{
+	width:36px;
+	height:36px;
+}
+.su_text{
+	text-decoration:line-through;
+}
+.wrap-contact{
+	background: #b3d7ff;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	border-radius: 10px;
+	padding: 55px 55px 55px 55px;
+}

@@ -12,11 +12,11 @@
 	  display: flex;
 	  align-items: center; 
 	}
-	.jumbotron{
+	.jumbotron{ 
 	  height:100%;
 	  width:100%;
 	}
-	#title{
+	.item_text{
 	  font-family:'微軟正黑體';
 	}
 	.title{
@@ -29,53 +29,67 @@
 	.su_text{
 		text-decoration:line-through;
 	}
+	.wrap-contact{
+		background: #b3d7ff;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		padding-top: 55px;
+		padding-bottom: 55px;
+		border-radius: 10px;
+		padding: 55px 55px 55px 55px;
+	}
 </style>
 <body>
-	<div class="jumbotron vertical-center">
-		<div class="container" style="width: 500px;">
-			<h2 id="title" class="text-center text-black font-weight-bold title">待辦清單</h2>
-			<div class="row align-items-center">
-				<div id="accordion">  
+	<div class="jumbotron vertical-center bg-light">
+		<div class="container wrap-contact" style="width: 500px;">
+			<div class="row justify-content-center align-items-center">
+				<div class="item_text">  
+					<div class="row">
+						<div class="col">
+							<h2 id="title" class="text-center text-black font-weight-bold title">待辦清單</h2>
+						</div>
+					</div>
 					<div class="row" id="add_item">
 						<div class="col">
 							<input type="textbox" class="form-control" id="item" name="item" />
 						</div>
 						<img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="add" name="add" onClick="add_item()"/>
 					</div>
-					<h3>------------------------------------</h3>
+					<h3>----------------------------------</h3>
 					<div class="card bg-light text-secondary">
 						<div class="card-body">
 							<div id="item_list">
 								<table id="item_table" class="table">
-									<tr>
+									<tr class="table-info">
 										<th scope="col"></th>
 										<th scope="col">項目</th>
 										<th scope="col">修改</th>
 										<th scope="col">刪除</th>
 									</tr>
 									<tr id="item0">
-											<td scope="row"><input type="checkbox" id="success" name="success" onClick="success_item(this)"/></td>
-											<td>7點~8點晨跑</td>
-											<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(this)"/></td>
-											<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(this)"/></td>
-										</tr>
-										<tr id="item1">
-											<td scope="row"><input type="checkbox" id="success" name="success" onClick="success_item(this)"/></td>
-											<td>8點~9點準備上班</td>
-											<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(this)"/></td>
-											<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(this)"/></td>
-										</tr>
+										<td scope="row"><input type="checkbox" id="success" name="success" onClick="success_item(this)"/></td>
+										<td>7點~8點晨跑</td>
+										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(this)"/></td>
+										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(this)"/></td>
+									</tr>
+									<tr id="item1">
+										<td scope="row"><input type="checkbox" id="success" name="success" onClick="success_item(this)"/></td>
+										<td>8點~9點準備上班</td>
+										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(this)"/></td>
+										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(this)"/></td>
+									</tr>
 								</table>
 							</div>
 						</div>
 					</div>
-					<h3>------------------------------------</h3>
+					<h3>----------------------------------</h3>
 					<div class="card bg-light text-secondary">
 						<div class="card-body">
 							<h2 id="title" class="text-center text-black font-weight-bold">已完成</h2>
 							<div id="success_list">
 								<table id="success_table" class="table">
-									<tr>
+									<tr class="table-info">
 										<th scope="col"></th>
 										<th scope="col">項目</th>
 										<th scope="col">修改</th>
@@ -102,9 +116,10 @@ function add_item(){
 	let item_table = document.getElementById("item_table");
 	let item = document.getElementById("item").value;
 	let length = item_table.rows.length;
+	let item_id = "item"+(length-1);
 	
 	let tr = item_table.insertRow(length);
-	tr.setAttribute("id", "item"+(length-1));
+	tr.setAttribute("id", item_id);
 	
 	//用陣列組欄位內容
 	let success_item = document.createElement("input");
@@ -140,7 +155,8 @@ function add_item(){
 		td.appendChild(colums[i]);
 		tr.appendChild(td);
 	}
-	
+
+	//setCookie(item_id,td.innerHTML);
 	document.getElementById("item").value = "";
 }
 
@@ -149,18 +165,16 @@ function update_item(obj){
 	let textbox = item_td.querySelector('input[type=textbox]');
 	
 	if(textbox==null){
-		item_td.innerHTML = '<input type="textbox" id="update" name="update" value="'+item_td.innerText+'"/>';
+		item_td.innerHTML = '<input type="textbox" class="form-control" id="update" name="update" value="'+item_td.innerText+'"/>';
 	}else{
 		item_td.innerHTML =  textbox.value;
 	}
 }
 
 function delete_item(obj){
-	let item_table = obj.closest('table');
-	let tr_count = obj.closest('tr').id.replace("item","");
-	
-	item_table.deleteRow(Number(tr_count)+1);
-	
+	let td = obj.parentNode;
+	let tr = td.parentNode;
+	tr.parentNode.removeChild(tr);
 }
 
 function success_item(obj){
@@ -179,21 +193,30 @@ function success_item(obj){
 		let item_table = document.getElementById("item_table");
 		let tr = obj.closest('tr');
 		tr.setAttribute("id", "item"+(item_table.rows.length-1));
+		
+		let su_text = tr.cells[1];
+		su_text.setAttribute("class", "");
 		item_table.appendChild(tr);
 	}
-	
-	//let now_text = document.getElementById("item_table").rows[count].cells[1].innerHTML;
-	//let table_length = document.getElementById("success_table").rows.length;
-	
-	//let tr = document.getElementById("success_table").insertRow(table_length);
-	//tr.setAttribute("id","su_item"+table_length);
-	//let td = tr.insertCell(tr.cells.length);
-    //td.innerHTML = '<td>'+now_text+'</td>';
-	
-	//td = tr.insertCell(tr.cells.length);
-	//td.innerHTML = '<img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_SuccessItem('+table_length+')"/>';
+}
 
-	//delete_item(count);
+function setCookie(name,value){
+	let days = 30;
+	let date = new Date();
+	date.setTime(date.getTime()+days*24*60*60*1000);
+	document.cookie = name + "=" + escape(value) + ";expires=" + date.toGMTString();
+}
+
+function getCookie(name){
+	let arr = document.cookie.match(new RegExp("(^| )"   name   "=([^;]*)(;|$)"));
+	if (arr != null) return unescape(arr[2]); return null;
+}
+
+function delCookie(name){
+	let date = new Date();
+	date.setTime(date.getTime()-1);
+	let cval = getCookie(name);
+	let (cval != null) document.cookie = name + "=" + cval + ";expires=" + date.toGMTString();
 }
 </script>
 </html>
