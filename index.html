@@ -50,14 +50,13 @@
 							<h2 id="title" class="text-center text-black font-weight-bold title">待辦清單</h2>
 						</div>
 					</div>
-					<div class="row" id="add_item">
+					<div class="row mb-4">
 						<div class="col">
 							<input type="textbox" class="form-control" id="item" name="item" />
 						</div>
-						<img src="./assets/images/success.png" alt=""  class="img-thumbnail" id="add" name="add" onClick="add_item()"/>
+						<input type="button" id="add" class="btn btn-success" value="Go" onClick="add_item()">
 					</div>
-					<h3>----------------------------------</h3>
-					<div class="card bg-light text-secondary">
+					<div class="card bg-light text-secondary shadow p-4 mb-4 bg-white">
 						<div class="card-body">
 							<div id="item_list">
 								<table id="item_table" class="table">
@@ -67,26 +66,23 @@
 										<th scope="col">修改</th>
 										<th scope="col">刪除</th>
 									</tr>
-									<!--
 									<tr id="item0">
-										<td scope="row"><input type="checkbox" id="success" name="success" onClick="success_item(this)"/></td>
-										<td>7點~8點晨跑</td>
-										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(this)"/></td>
-										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(this)"/></td>
+										<td scope="row"><input type="checkbox" id="success" name="success" onClick="successItem()"/></td>
+										<td class="a">7點~8點晨跑</td>
+										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="updateItem()"/></td>
+										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="deleteItem()"/></td>
 									</tr>
 									<tr id="item1">
-										<td scope="row"><input type="checkbox" id="success" name="success" onClick="success_item(this)"/></td>
+										<td scope="row"><input type="checkbox" id="success" name="success" onClick="successItem()"/></td>
 										<td>8點~9點準備上班</td>
-										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(this)"/></td>
-										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(this)"/></td>
+										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="updateItem()"/></td>
+										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="deleteItem()"/></td>
 									</tr>
-									-->
 								</table>
 							</div>
 						</div>
 					</div>
-					<h3>----------------------------------</h3>
-					<div class="card bg-light text-secondary">
+					<div class="card bg-light text-secondary shadow p-4 mb-4 bg-white">
 						<div class="card-body">
 							<h2 id="title" class="text-center text-black font-weight-bold">已完成</h2>
 							<div id="success_list">
@@ -97,14 +93,12 @@
 										<th scope="col">修改</th>
 										<th scope="col">刪除</th>
 									</tr>
-									<!--
 									<tr id="su_item0">
-										<td><input type="checkbox" id="success" name="success" onClick="success_item(this)" checked/></td>
+										<td><input type="checkbox" id="success" name="success" onClick="successItem()" checked/></td>
 										<td class="su_text">5點~6點準備起床盥洗</td>
-										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="update_item(this)"/></td>
-										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="delete_item(this)"/></td>
+										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="updateItem()"/></td>
+										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="deleteItem()"/></td>
 									</tr>
-									-->
 								</table>
 							<div>
 						<div>
@@ -135,30 +129,24 @@ function add_item(){
 	let tr = item_table.insertRow(length);
 	tr.setAttribute("id", item_id);
 	
+	let input = document.createElement("input");
+	let img = document.createElement("img");
+	
 	//用陣列組欄位內容
-	let success_item = document.createElement("input");
-	success_item.setAttribute("type", "checkbox");
-	success_item.setAttribute("id", "success");
-	success_item.setAttribute("name", "success");
-	success_item.setAttribute("onClick", "success_item(this)");
+	let json = {"type":"checkbox","id":"success","onClick":"successItem()"};
+	let successItem = setElement(input,json);
 	
 	let item_text = document.createTextNode(item);
 	
-	let update_item = document.createElement("img");
-	update_item.setAttribute("src", "./assets/images/pencil.png");
-	update_item.setAttribute("id", "pencil");
-	update_item.setAttribute("name", "pencil");
-	update_item.setAttribute("class", "img-thumbnail");
-	update_item.setAttribute("onClick", "update_item(this)");
+	json = {"src":"./assets/images/pencil.png","id":"update","class":"img-thumbnail","onClick":"updateItem()"};
+	let updateItem = setElement(img,json);
 	
-	let delete_item = document.createElement("img");
-	delete_item.setAttribute("src", "./assets/images/delete.png");
-	delete_item.setAttribute("id", "delete");
-	delete_item.setAttribute("name", "delete");
-	delete_item.setAttribute("class", "img-thumbnail");
-	delete_item.setAttribute("onClick", "delete_item(this)");
+	//要在建立新的img元素，不然會被覆蓋
+	img = document.createElement("img");
+	json = {"src":"./assets/images/delete.png","id":"delete","class":"img-thumbnail","onClick":"deleteItem()"};
+	let deleteItem = setElement(img,json);
 	
-	let colums = [success_item,item_text,update_item,delete_item];
+	let colums = [successItem,item_text,updateItem,deleteItem];
 	
 	//迴圈跑陣列新增至table裡
 	for(var i=0; i<colums.length; i++){
@@ -175,8 +163,18 @@ function add_item(){
 	console.log(getCookie("item_table"));
 }
 
-function update_item(obj){
+function setElement(element,json){
+	for(key in json){
+		element.setAttribute(key,json[key]);
+	}
+	
+	return element;
+}
+
+function updateItem(obj){
+	console.log(this)
 	let item_td = obj.closest('tr').cells[1];
+	//使用class 判斷是否為編輯模式(在文字的節點上新增)
 	let textbox = item_td.querySelector('input[type=textbox]');
 	
 	if(textbox==null){
@@ -186,15 +184,22 @@ function update_item(obj){
 	}
 }
 
-function delete_item(obj){
+function deleteItem(obj){
 	let td = obj.parentNode;
 	let tr = td.parentNode;
 	tr.parentNode.removeChild(tr);
 }
 
-function success_item(obj){
+function successItem(obj){
 	let item_table = obj.closest('table');
 	let table_id = item_table.id;
+
+	//設定success_table裡的td為文字變更style 刪除
+	//在設定td有文字又帶指定的class時style帶空白
+	//let table = document.getElementById(table_id);
+	//let tr = obj.closest('tr');
+	//tr.setAttribute("id", "su_item"+(table.rows.length-1));
+	//table.appendChild(tr);
 	
 	if(table_id=="item_table"){
 		let success_table = document.getElementById("success_table");
