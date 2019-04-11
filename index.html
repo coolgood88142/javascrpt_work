@@ -26,9 +26,6 @@
 		width:36px;
 		height:36px;
 	}
-	.su_text{
-		text-decoration:line-through;
-	}
 	.wrap-contact{
 		background: #b3d7ff;
 		display: flex;
@@ -67,16 +64,16 @@
 										<th scope="col">刪除</th>
 									</tr>
 									<tr id="item0">
-										<td scope="row"><input type="checkbox" id="success" name="success" onClick="successItem()"/></td>
-										<td class="a">7點~8點晨跑</td>
-										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="updateItem()"/></td>
-										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="deleteItem()"/></td>
+										<td scope="row"><input type="checkbox" id="success" name="success" ></td>
+										<td class="text">7點~8點晨跑</td>
+										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" /></td>
+										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" /></td>
 									</tr>
 									<tr id="item1">
-										<td scope="row"><input type="checkbox" id="success" name="success" onClick="successItem()"/></td>
-										<td>8點~9點準備上班</td>
-										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="updateItem()"/></td>
-										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="deleteItem()"/></td>
+										<td scope="row"><input type="checkbox" id="success" name="success" /></td>
+										<td class="text">8點~9點準備上班</td>
+										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" /></td>
+										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" /></td>
 									</tr>
 								</table>
 							</div>
@@ -94,10 +91,10 @@
 										<th scope="col">刪除</th>
 									</tr>
 									<tr id="su_item0">
-										<td><input type="checkbox" id="success" name="success" onClick="successItem()" checked/></td>
-										<td class="su_text">5點~6點準備起床盥洗</td>
-										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" onClick="updateItem()"/></td>
-										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" onClick="deleteItem()"/></td>
+										<td><input type="checkbox" id="success" name="success" checked/></td>
+										<td class="text" style="text-decoration:line-through">5點~6點準備起床盥洗</td>
+										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" /></td>
+										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" /></td>
 									</tr>
 								</table>
 							<div>
@@ -120,6 +117,22 @@ function getTableData(){
 	//alert(getCookie("item_table"));
 }
 
+let img = document.getElementsByClassName("img-thumbnail");
+for(var i=0; i<img.length; i++){
+	if(img[i].id == 'delete'){
+		img[i].addEventListener('click',deleteItem);
+	}else{
+		img[i].addEventListener('click',updateItem);
+	}
+}
+
+let input = document.getElementsByTagName("input");
+for(var i=0; i<input.length; i++){
+	if(input[i].type == 'checkbox'){
+		input[i].addEventListener('click',successItem);
+	}
+}
+
 function add_item(){
 	let item_table = document.getElementById("item_table");
 	let item = document.getElementById("item").value;
@@ -133,17 +146,17 @@ function add_item(){
 	let img = document.createElement("img");
 	
 	//用陣列組欄位內容
-	let json = {"type":"checkbox","id":"success","onClick":"successItem()"};
+	let json = {"type":"checkbox","id":"success"};
 	let successItem = setElement(input,json);
 	
 	let item_text = document.createTextNode(item);
 	
-	json = {"src":"./assets/images/pencil.png","id":"update","class":"img-thumbnail","onClick":"updateItem()"};
+	json = {"src":"./assets/images/pencil.png","id":"update","class":"img-thumbnail"};
 	let updateItem = setElement(img,json);
 	
 	//要在建立新的img元素，不然會被覆蓋
 	img = document.createElement("img");
-	json = {"src":"./assets/images/delete.png","id":"delete","class":"img-thumbnail","onClick":"deleteItem()"};
+	json = {"src":"./assets/images/delete.png","id":"delete","class":"img-thumbnail"};
 	let deleteItem = setElement(img,json);
 	
 	let colums = [successItem,item_text,updateItem,deleteItem];
@@ -171,39 +184,51 @@ function setElement(element,json){
 	return element;
 }
 
-function updateItem(obj){
-	console.log(this)
-	let item_td = obj.closest('tr').cells[1];
+function updateItem(){
 	//使用class 判斷是否為編輯模式(在文字的節點上新增)
-	let textbox = item_td.querySelector('input[type=textbox]');
+	let item_td = this.closest('tr').cells[1];
+	let textbox = item_td.className;
 	
-	if(textbox==null){
+	if(textbox=='text'){
 		item_td.innerHTML = '<input type="textbox" class="form-control" id="update" name="update" value="'+item_td.innerText+'"/>';
+		item_td.setAttribute("class","edit")
 	}else{
-		item_td.innerHTML =  textbox.value;
+		let td_childNode = item_td.childNodes[0];
+		item_td.innerHTML =  td_childNode.value;
+		item_td.setAttribute("class","text");
+	}
+	
+	setTableFieldTextStyle(this.closest('table').id,item_td)
+}
+
+function setTableFieldTextStyle(id,obj){
+	if(id=='success_table'){
+		obj.setAttribute("style","text-decoration:line-through");
+	}else{
+		obj.setAttribute("style","");
 	}
 }
 
-function deleteItem(obj){
-	let td = obj.parentNode;
+function deleteItem(){
+	let td = this.parentNode;
 	let tr = td.parentNode;
 	tr.parentNode.removeChild(tr);
 }
 
-function successItem(obj){
-	let item_table = obj.closest('table');
+function successItem(){
+	let item_table = this.closest('table');
 	let table_id = item_table.id;
 
 	//設定success_table裡的td為文字變更style 刪除
 	//在設定td有文字又帶指定的class時style帶空白
 	//let table = document.getElementById(table_id);
-	//let tr = obj.closest('tr');
+	//let tr = this.closest('tr');
 	//tr.setAttribute("id", "su_item"+(table.rows.length-1));
 	//table.appendChild(tr);
 	
 	if(table_id=="item_table"){
 		let success_table = document.getElementById("success_table");
-		let tr = obj.closest('tr');
+		let tr = this.closest('tr');
 		tr.setAttribute("id", "su_item"+(success_table.rows.length-1));
 		
 		let su_text = tr.cells[1];
@@ -211,7 +236,7 @@ function successItem(obj){
 		success_table.appendChild(tr);
 	}else{
 		let item_table = document.getElementById("item_table");
-		let tr = obj.closest('tr');
+		let tr = this.closest('tr');
 		tr.setAttribute("id", "item"+(item_table.rows.length-1));
 		
 		let su_text = tr.cells[1];
