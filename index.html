@@ -147,25 +147,30 @@ function add_item(){
 	
 	//用陣列組欄位內容
 	let json = {"type":"checkbox","id":"success"};
-	let successItem = setElement(input,json);
+	let success_Item = setElement(input,json);
+	success_Item.addEventListener('click',successItem);
 	
 	let item_text = document.createTextNode(item);
 	
 	json = {"src":"./assets/images/pencil.png","id":"update","class":"img-thumbnail"};
-	let updateItem = setElement(img,json);
+	let update_Item = setElement(img,json);
+	update_Item.addEventListener('click',updateItem);
 	
 	//要在建立新的img元素，不然會被覆蓋
 	img = document.createElement("img");
 	json = {"src":"./assets/images/delete.png","id":"delete","class":"img-thumbnail"};
-	let deleteItem = setElement(img,json);
+	let delete_Item = setElement(img,json);
+	delete_Item.addEventListener('click',deleteItem);
 	
-	let colums = [successItem,item_text,updateItem,deleteItem];
+	let colums = [success_Item,item_text,update_Item,delete_Item];
 	
 	//迴圈跑陣列新增至table裡
 	for(var i=0; i<colums.length; i++){
 		let td = document.createElement("td");
 		if(i==0){
 			td.setAttribute("scope", "row");
+		}else if(i==1){
+			td.setAttribute("class", "text");
 		}
 		td.appendChild(colums[i]);
 		tr.appendChild(td);
@@ -218,6 +223,7 @@ function deleteItem(){
 function successItem(){
 	let item_table = this.closest('table');
 	let table_id = item_table.id;
+	let tr = this.closest('tr');
 
 	//設定success_table裡的td為文字變更style 刪除
 	//在設定td有文字又帶指定的class時style帶空白
@@ -228,21 +234,22 @@ function successItem(){
 	
 	if(table_id=="item_table"){
 		let success_table = document.getElementById("success_table");
-		let tr = this.closest('tr');
 		tr.setAttribute("id", "su_item"+(success_table.rows.length-1));
 		
 		let su_text = tr.cells[1];
-		su_text.setAttribute("class", "su_text");
+		su_text.setAttribute("class", "text");
 		success_table.appendChild(tr);
+		setTableFieldTextStyle(success_table.id,tr)
 	}else{
 		let item_table = document.getElementById("item_table");
-		let tr = this.closest('tr');
 		tr.setAttribute("id", "item"+(item_table.rows.length-1));
 		
 		let su_text = tr.cells[1];
 		su_text.setAttribute("class", "");
 		item_table.appendChild(tr);
 	}
+	
+	
 }
 
 function setTableCookie(obj){
