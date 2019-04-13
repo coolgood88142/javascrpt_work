@@ -6,18 +6,21 @@
 <script src="./bundle.js"></script>
 <style>
 	.vertical-center {
-	  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-	  min-height: 100vh; /* These two lines are counted as one :-)       */
+		min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+		min-height: 100vh; /* These two lines are counted as one :-)       */
 
-	  display: flex;
-	  align-items: center; 
+		display: flex;
+		align-items: center; 
 	}
 	.jumbotron{ 
-	  height:100%;
-	  width:100%;
+		height:100%;
+		width:100%;
+	}
+	.su_text{
+		text-decoration:line-through;
 	}
 	.item_text{
-	  font-family:'微軟正黑體';
+		font-family:'微軟正黑體';
 	}
 	.title{
 		margin-bottom: 20px;
@@ -92,7 +95,7 @@
 									</tr>
 									<tr id="su_item0">
 										<td><input type="checkbox" id="success" name="success" checked/></td>
-										<td class="text" style="text-decoration:line-through">5點~6點準備起床盥洗</td>
+										<td class="su_text">5點~6點準備起床盥洗</td>
 										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" /></td>
 										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" /></td>
 									</tr>
@@ -190,27 +193,28 @@ function setElement(element,json){
 }
 
 function updateItem(){
+	//先取得目前第一欄checkbox是否勾選，當修改完回復時用來判斷要set哪個class(text、su_text)
 	//使用class 判斷是否為編輯模式(在文字的節點上新增)
+	let isChecked = this.closest('tr').cells[0].childNodes[0].checked;
 	let item_td = this.closest('tr').cells[1];
-	let textbox = item_td.className;
+	let su_text = "su_text";
 	
-	if(textbox=='text'){
-		item_td.innerHTML = '<input type="textbox" class="form-control" id="update" name="update" value="'+item_td.innerText+'"/>';
-		item_td.setAttribute("class","edit")
-	}else{
-		let td_childNode = item_td.childNodes[0];
-		item_td.innerHTML =  td_childNode.value;
-		item_td.setAttribute("class","text");
+	if(!isChecked){
+		su_text = "text";
 	}
 	
-	setTableFieldTextStyle(this.closest('table').id,item_td)
+	setTableRowTextHtml(item_td,su_text);
 }
 
-function setTableFieldTextStyle(id,obj){
-	if(id=='success_table'){
-		obj.setAttribute("style","text-decoration:line-through");
+function setTableRowTextHtml(item_td,text){
+	let textbox = item_td.className;
+	if(textbox=='edit'){
+		let td_childNode = item_td.childNodes[0];
+		item_td.innerHTML =  td_childNode.value;
+		item_td.setAttribute("class",text);
 	}else{
-		obj.setAttribute("style","");
+		item_td.innerHTML = '<input type="textbox" class="form-control" id="update" name="update" value="'+item_td.innerText+'"/>';
+		item_td.setAttribute("class","edit");
 	}
 }
 
@@ -221,35 +225,23 @@ function deleteItem(){
 }
 
 function successItem(){
+	let isChecked = this.checked;
 	let item_table = this.closest('table');
 	let table_id = item_table.id;
 	let tr = this.closest('tr');
 
-	//設定success_table裡的td為文字變更style 刪除
-	//在設定td有文字又帶指定的class時style帶空白
-	//let table = document.getElementById(table_id);
-	//let tr = this.closest('tr');
-	//tr.setAttribute("id", "su_item"+(table.rows.length-1));
-	//table.appendChild(tr);
-	
-	if(table_id=="item_table"){
-		let success_table = document.getElementById("success_table");
-		tr.setAttribute("id", "su_item"+(success_table.rows.length-1));
-		
-		let su_text = tr.cells[1];
-		su_text.setAttribute("class", "text");
-		success_table.appendChild(tr);
-		setTableFieldTextStyle(success_table.id,tr)
+	let list_table = "";
+	if(isChecked){
+		list_table = document.getElementById("success_table");
+		tr.setAttribute("id", "su_item"+(list_table.rows.length-1));
+		tr.cells[1].setAttribute("class", "su_text");
 	}else{
-		let item_table = document.getElementById("item_table");
-		tr.setAttribute("id", "item"+(item_table.rows.length-1));
-		
-		let su_text = tr.cells[1];
-		su_text.setAttribute("class", "");
-		item_table.appendChild(tr);
+		list_table = document.getElementById("item_table");
+		tr.setAttribute("id", "item"+(list_table.rows.length-1));
+		tr.cells[1].setAttribute("class", "text");
 	}
 	
-	
+	list_table.appendChild(tr);
 }
 
 function setTableCookie(obj){
