@@ -67,14 +67,14 @@
 										<th scope="col">刪除</th>
 									</tr>
 									<tr id="item0">
-										<td scope="row"><input type="checkbox" id="success" name="success" ></td>
-										<td class="text">7點~8點晨跑</td>
+										<td><input type="checkbox" id="success" name="success" ></td>
+										<td>7點~8點晨跑</td>
 										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" /></td>
 										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" /></td>
 									</tr>
 									<tr id="item1">
-										<td scope="row"><input type="checkbox" id="success" name="success" /></td>
-										<td class="text">8點~9點準備上班</td>
+										<td><input type="checkbox" id="success" name="success" /></td>
+										<td>8點~9點準備上班</td>
 										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" /></td>
 										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" /></td>
 									</tr>
@@ -144,37 +144,29 @@ function add_item(){
 	
 	let tr = item_table.insertRow(length);
 	tr.setAttribute("id", item_id);
-	
-	let input = document.createElement("input");
-	let img = document.createElement("img");
-	
+
 	//用陣列組欄位內容
-	let json = {"type":"checkbox","id":"success"};
-	let success_Item = setElement(input,json);
-	success_Item.addEventListener('click',successItem);
+	let obj = new Object();
+	obj = {element : 'input',type : 'checkbox',id : 'success'};
+	let success_Item = setElement(obj);
+	success_Item.addEventListener('click', successItem);
 	
 	let item_text = document.createTextNode(item);
 	
-	json = {"src":"./assets/images/pencil.png","id":"update","class":"img-thumbnail"};
-	let update_Item = setElement(img,json);
-	update_Item.addEventListener('click',updateItem);
+	obj = {element : 'img',src : './assets/images/pencil.png',id : 'update',class : 'img-thumbnail'};
+	let update_Item = setElement(obj);
+	update_Item.addEventListener('click', updateItem);
 	
 	//要在建立新的img元素，不然會被覆蓋
-	img = document.createElement("img");
-	json = {"src":"./assets/images/delete.png","id":"delete","class":"img-thumbnail"};
-	let delete_Item = setElement(img,json);
-	delete_Item.addEventListener('click',deleteItem);
+	obj = {element : 'img',src : './assets/images/delete.png',id : 'delete',class : 'img-thumbnail'};
+	let delete_Item = setElement(obj);
+	delete_Item.addEventListener('click', deleteItem);
 	
-	let colums = [success_Item,item_text,update_Item,delete_Item];
+	let colums = [success_Item, item_text, update_Item, delete_Item];
 	
 	//迴圈跑陣列新增至table裡
 	for(var i=0; i<colums.length; i++){
 		let td = document.createElement("td");
-		if(i==0){
-			td.setAttribute("scope", "row");
-		}else if(i==1){
-			td.setAttribute("class", "text");
-		}
 		td.appendChild(colums[i]);
 		tr.appendChild(td);
 	}
@@ -184,12 +176,16 @@ function add_item(){
 	console.log(getCookie("item_table"));
 }
 
-function setElement(element,json){
-	for(key in json){
-		element.setAttribute(key,json[key]);
+function setElement(obj){
+	let el = document.createElement(obj['element']);
+	delete obj.element;
+	for(key in obj){
+		console.log(key);
+		console.log(obj[key]);
+		el.setAttribute(key,obj[key]);
 	}
 	
-	return element;
+	return el;
 }
 
 function updateItem(){
@@ -197,10 +193,10 @@ function updateItem(){
 	//使用class 判斷是否為編輯模式(在文字的節點上新增)
 	let isChecked = this.closest('tr').cells[0].childNodes[0].checked;
 	let item_td = this.closest('tr').cells[1];
-	let su_text = "su_text";
+	let su_text = "";
 	
-	if(!isChecked){
-		su_text = "text";
+	if(isChecked){
+		su_text = "su_text";
 	}
 	
 	setTableRowTextHtml(item_td,su_text);
