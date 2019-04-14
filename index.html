@@ -5,6 +5,9 @@
 </head>
 <script src="./bundle.js"></script>
 <style>
+	.container{
+		width: 530px;
+	}
 	.vertical-center {
 		min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
 		min-height: 100vh; /* These two lines are counted as one :-)       */
@@ -21,6 +24,9 @@
 	}
 	.item_text{
 		font-family:'微軟正黑體';
+	}
+	.card{
+		width: 450px;
 	}
 	.title{
 		margin-bottom: 20px;
@@ -42,7 +48,7 @@
 </style>
 <body>
 	<div class="jumbotron vertical-center bg-light">
-		<div class="container wrap-contact" style="width: 500px;">
+		<div class="container wrap-contact">
 			<div class="row justify-content-center align-items-center">
 				<div class="item_text">  
 					<div class="row">
@@ -61,10 +67,10 @@
 							<div id="item_list">
 								<table id="item_table" class="table">
 									<tr class="table-info">
-										<th scope="col"></th>
-										<th scope="col">項目</th>
-										<th scope="col">修改</th>
-										<th scope="col">刪除</th>
+										<th></th>
+										<th>項目</th>
+										<th>修改</th>
+										<th>刪除</th>
 									</tr>
 									<tr id="item0">
 										<td><input type="checkbox" id="success" name="success" ></td>
@@ -88,10 +94,10 @@
 							<div id="success_list">
 								<table id="success_table" class="table">
 									<tr class="table-info">
-										<th scope="col"></th>
-										<th scope="col">項目</th>
-										<th scope="col">修改</th>
-										<th scope="col">刪除</th>
+										<th></th>
+										<th>項目</th>
+										<th>修改</th>
+										<th>刪除</th>
 									</tr>
 									<tr id="su_item0">
 										<td><input type="checkbox" id="success" name="success" checked/></td>
@@ -121,20 +127,20 @@ function getTableData(){
 }
 
 let img = document.getElementsByClassName("img-thumbnail");
-for(var i=0; i<img.length; i++){
-	if(img[i].id == 'delete'){
-		img[i].addEventListener('click',deleteItem);
+Array.prototype.forEach.call(img, function(el){
+	if(el.id == 'delete'){
+		el.addEventListener('click',deleteItem);
 	}else{
-		img[i].addEventListener('click',updateItem);
+		el.addEventListener('click',updateItem);
 	}
-}
+});
 
 let input = document.getElementsByTagName("input");
-for(var i=0; i<input.length; i++){
-	if(input[i].type == 'checkbox'){
-		input[i].addEventListener('click',successItem);
+Array.prototype.forEach.call(input, function(el){
+	if(el.type == 'checkbox'){
+		el.addEventListener('click',successItem);
 	}
-}
+})
 
 function add_item(){
 	let item_table = document.getElementById("item_table");
@@ -165,11 +171,12 @@ function add_item(){
 	let colums = [success_Item, item_text, update_Item, delete_Item];
 	
 	//迴圈跑陣列新增至table裡
-	for(var i=0; i<colums.length; i++){
+	colums.forEach(function(item,index,array){
 		let td = document.createElement("td");
-		td.appendChild(colums[i]);
+		td.appendChild(item);
 		tr.appendChild(td);
-	}
+	});
+	
 
 	document.getElementById("item").value = "";
 	setTableCookie(item_table);
@@ -180,8 +187,6 @@ function setElement(obj){
 	let el = document.createElement(obj['element']);
 	delete obj.element;
 	for(key in obj){
-		console.log(key);
-		console.log(obj[key]);
 		el.setAttribute(key,obj[key]);
 	}
 	
