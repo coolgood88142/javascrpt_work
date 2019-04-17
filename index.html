@@ -35,6 +35,13 @@
 		width:36px;
 		height:36px;
 	}
+	.td_Item{
+		word-break:break-all;
+		width: 180px;
+	}
+	td{
+		word-break:break-all;
+	}
 	.wrap-contact{
 		background: #b3d7ff;
 		display: flex;
@@ -68,21 +75,21 @@
 								<table id="item_table" class="table">
 									<tr class="table-info">
 										<th></th>
-										<th>項目</th>
+										<th class="td_Item">項目</th>
 										<th>修改</th>
 										<th>刪除</th>
 									</tr>
 									<tr id="item0">
 										<td><input type="checkbox" id="success" name="success" ></td>
 										<td>7點~8點晨跑</td>
-										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" /></td>
-										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" /></td>
+										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" /></td>
+										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" /></td>
 									</tr>
 									<tr id="item1">
 										<td><input type="checkbox" id="success" name="success" /></td>
 										<td>8點~9點準備上班</td>
-										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" /></td>
-										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" /></td>
+										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" /></td>
+										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" /></td>
 									</tr>
 								</table>
 							</div>
@@ -95,15 +102,15 @@
 								<table id="success_table" class="table">
 									<tr class="table-info">
 										<th></th>
-										<th>項目</th>
+										<th class="td_Item">項目</th>
 										<th>修改</th>
 										<th>刪除</th>
 									</tr>
 									<tr id="su_item0">
 										<td><input type="checkbox" id="success" name="success" checked/></td>
 										<td class="su_text">5點~6點準備起床盥洗</td>
-										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" /></td>
-										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" /></td>
+										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" /></td>
+										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" /></td>
 									</tr>
 								</table>
 							<div>
@@ -126,21 +133,20 @@ function getTableData(){
 	//alert(getCookie("item_table"));
 }
 
-let img = document.getElementsByClassName("img-thumbnail");
-Array.prototype.forEach.call(img, function(el){
-	if(el.id == 'delete'){
-		el.addEventListener('click',deleteItem);
-	}else{
-		el.addEventListener('click',updateItem);
-	}
-});
+let success_Element = document.getElementsByName("success");
+setElemetsFunction(success_Element,successItem);
 
-let input = document.getElementsByTagName("input");
-Array.prototype.forEach.call(input, function(el){
-	if(el.type == 'checkbox'){
-		el.addEventListener('click',successItem);
-	}
-})
+let pencil_Element = document.getElementsByName("pencil");
+setElemetsFunction(pencil_Element,updateItem);
+
+let delete_Element = document.getElementsByName("delete");
+setElemetsFunction(delete_Element,deleteItem);
+
+function setElemetsFunction(Elemets,Item){
+	Array.prototype.forEach.call(Elemets, function(el){
+		el.addEventListener('click',Item);
+	});
+}
 
 function add_item(){
 	let item_table = document.getElementById("item_table");
@@ -153,18 +159,18 @@ function add_item(){
 
 	//用陣列組欄位內容
 	let obj = new Object();
-	obj = {element : 'input',type : 'checkbox',id : 'success'};
+	obj = {element : 'input',type : 'checkbox',id : 'success',name : 'success'};
 	let success_Item = setElement(obj);
 	success_Item.addEventListener('click', successItem);
 	
 	let item_text = document.createTextNode(item);
 	
-	obj = {element : 'img',src : './assets/images/pencil.png',id : 'update',class : 'img-thumbnail'};
+	obj = {element : 'img',src : './assets/images/pencil.png',id : 'update',name : 'update',class : 'img-thumbnail'};
 	let update_Item = setElement(obj);
 	update_Item.addEventListener('click', updateItem);
 	
 	//要在建立新的img元素，不然會被覆蓋
-	obj = {element : 'img',src : './assets/images/delete.png',id : 'delete',class : 'img-thumbnail'};
+	obj = {element : 'img',src : './assets/images/delete.png',id : 'delete',name : 'delete',class : 'img-thumbnail'};
 	let delete_Item = setElement(obj);
 	delete_Item.addEventListener('click', deleteItem);
 	
