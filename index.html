@@ -138,12 +138,11 @@ function getTableData(){
 }
 
 let success_Element = document.getElementsByName("success");
-setElemetsFunction(success_Element,successItem);
-
 let pencil_Element = document.getElementsByName("pencil");
-setElemetsFunction(pencil_Element,updateItem);
-
 let delete_Element = document.getElementsByName("delete");
+
+setElemetsFunction(success_Element,toggleSuccessItem);
+setElemetsFunction(pencil_Element,updateItem);
 setElemetsFunction(delete_Element,deleteItem);
 
 function setElemetsFunction(Elemets,Item){
@@ -165,7 +164,7 @@ function add_item(){
 	let obj = new Object();
 	obj = {element : 'input',type : 'checkbox',id : 'success',name : 'success'};
 	let success_Item = setElement(obj);
-	success_Item.addEventListener('click', successItem);
+	success_Item.addEventListener('click', toggleSuccessItem);
 	
 	let item_text = document.createTextNode(item);
 	
@@ -264,7 +263,7 @@ function deleteItem(){
 	tr.parentNode.removeChild(tr);
 }
 
-function successItem(){
+function toggleSuccessItem(){
 	let isChecked = this.checked;
 	let item_table = this.closest('table');
 	let table_id = item_table.id;
