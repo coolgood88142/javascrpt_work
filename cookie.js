@@ -1,15 +1,3 @@
-function setTableCookie(obj){
-	let table = obj;
-	let length = table.rows.length;
-	
-	//從第二行開始setCookie
-	for(let i=1; i<length; i++){
-		let row = table.rows[i];
-		setCookie(row.id,row.innerHTML);
-	}
-	setCookie(table.id,length-1);
-}
-
 function setCookie(name,value){
 	let days = 30;
 	let date = new Date();
@@ -19,8 +7,7 @@ function setCookie(name,value){
 
 function getCookie(name){
 	var name = name + "=";
-	var decodedCookie = decodeURIComponent(document.cookie);
-	var ca = decodedCookie.split(';');
+	var ca = document.cookie.split(';');
 	for(var i = 0; i <ca.length; i++) {
 		var c = ca[i];
 			while (c.charAt(0) == ' ') {

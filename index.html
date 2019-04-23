@@ -4,6 +4,8 @@
 	<meta charset="utf-8">
 </head>
 <script src="./bundle.js"></script>
+<script src="./cookie.js"></script>
+<script src="./storage.js"></script>
 <style>
 	.container{
 		width: 530px;
@@ -67,7 +69,10 @@
 						<div class="col">
 							<input type="textbox" class="form-control" id="item" name="item" />
 						</div>
-						<input type="button" id="add" class="btn btn-success" value="Go" onClick="add_item()">
+						<div style="text-align:right;">
+							<input type="button" id="add" class="btn btn-success" value="Go" onClick="add_item()">
+							<input type="button" id="save" class="btn btn-success" value="Save" onClick="Save_item()">
+						</div>
 					</div>
 					<div class="card bg-light text-secondary shadow p-4 mb-4 bg-white">
 						<div class="card-body">
@@ -124,12 +129,11 @@
 <script language="JavaScript">
 window.onload=getTableData;
 function getTableData(){
-	let days = 30;
-	let date = new Date();
-	date.setTime(date.getTime()+(days*24*60*60*1000));
-	document.cookie = "SetCookie" + "=" + escape("132456") + ";expires=" + date.toGMTString();
 	
-	console.log(document.cookie);
+	//let test_array = ["7點~8點晨跑","8點~9點準備上班"];
+	//setCookie("item_data",JSON.stringify(test_array));
+	//console.log(document.cookie);
+	//console.log(JSON.parse(document.cookie));
 	//alert(getCookie("item_table"));
 }
 
@@ -185,8 +189,37 @@ function add_item(){
 	
 
 	document.getElementById("item").value = "";
-	setTableCookie(item_table);
-	console.log(getCookie("item_table"));
+	//setTableCookie(item_table);
+	//console.log(getCookie("item_table"));
+}
+
+function Save_data(){
+
+}
+
+function Save_item(){
+	let Item_Data = [setJsonData("item_table"), setJsonData("success_table")];
+	//setCookie("Item_Data",Item_Data);
+	//console.log(getCookie("Item_Data"));
+	
+	
+	setStroage("localStorage", "Item_Data", Item_Data);
+	console.log(getStroage("localStorage","Item_Data"));
+	
+	//setSessionStroage(getCookie("Item_Data"));
+	//console.log(getSessionStroage("Item_Data"));
+}
+
+function setJsonData(table_name){
+	let table = document.getElementById(table_name);
+	let json = {"table":table_name, "item_array":[]};
+	Array.prototype.forEach.call(table.rows, function(el,i){
+		if(i!=0){
+			json.item_array.push(el.cells[1].innerHTML);
+		}
+	});
+	
+	return json;
 }
 
 function setElement(obj){
