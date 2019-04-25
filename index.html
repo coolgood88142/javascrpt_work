@@ -71,7 +71,6 @@
 						</div>
 						<div style="text-align:right;">
 							<input type="button" id="add" class="btn btn-success" value="Go" onClick="add_item()">
-							<input type="button" id="save" class="btn btn-success" value="Save" onClick="Save_item()">
 						</div>
 					</div>
 					<div class="card bg-light text-secondary shadow p-4 mb-4 bg-white">
@@ -84,13 +83,13 @@
 										<th>修改</th>
 										<th>刪除</th>
 									</tr>
-									<tr id="item0">
+									<tr>
 										<td><input type="checkbox" id="success" name="success" ></td>
 										<td>7點~8點晨跑</td>
 										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" /></td>
 										<td><img src="./assets/images/delete.png" alt=""  class="img-thumbnail" id="delete" name="delete" /></td>
 									</tr>
-									<tr id="item1">
+									<tr>
 										<td><input type="checkbox" id="success" name="success" /></td>
 										<td>8點~9點準備上班</td>
 										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" /></td>
@@ -111,7 +110,7 @@
 										<th>修改</th>
 										<th>刪除</th>
 									</tr>
-									<tr id="su_item0">
+									<tr>
 										<td><input type="checkbox" id="success" name="success" checked/></td>
 										<td class="su_text">5點~6點準備起床盥洗</td>
 										<td><img src="./assets/images/pencil.png" alt=""  class="img-thumbnail" id="pencil" name="pencil" /></td>
@@ -129,42 +128,34 @@
 <script language="JavaScript">
 window.onload=getTableData;
 function getTableData(){
-	
-	//let test_array = ["7點~8點晨跑","8點~9點準備上班"];
-	//setCookie("item_data",JSON.stringify(test_array));
-	//console.log(document.cookie);
-	//console.log(JSON.parse(document.cookie));
-	//alert(getCookie("item_table"));
-}
-
-let success_Element = document.getElementsByName("success");
-let pencil_Element = document.getElementsByName("pencil");
-let delete_Element = document.getElementsByName("delete");
-
-setElemetsFunction(success_Element,toggleSuccessItem);
-setElemetsFunction(pencil_Element,updateItem);
-setElemetsFunction(delete_Element,deleteItem);
-
-function setElemetsFunction(Elemets,Item){
-	Array.prototype.forEach.call(Elemets, function(el){
-		el.addEventListener('click',Item);
+	let table_data = JSON.parse(getCookie("Item_Data"));
+	table_data.forEach(function(data,index,array){
+		let table = "item_table";
+		let isChecked = false;
+		if(data.isSuccess == 'Y'){
+			table = "success_table";
+			isChecked = true;
+		}
+		
+		data.item_array.forEach(function(item,index,array){
+			setItemAttribute(table,item,isChecked);
+		});
 	});
 }
 
-function add_item(){
-	let item_table = document.getElementById("item_table");
-	let item = document.getElementById("item").value;
-	let length = item_table.rows.length;
-	let item_id = "item"+(length-1);
+function setItemAttribute(table,item,isChecked){
+	let createTable = document.getElementById(table);
+	let length = createTable.rows.length;	
+	let tr = createTable.insertRow(length);
 	
-	let tr = item_table.insertRow(length);
-	tr.setAttribute("id", item_id);
-
 	//用陣列組欄位內容
 	let obj = new Object();
 	obj = {element : 'input',type : 'checkbox',id : 'success',name : 'success'};
 	let success_Item = setElement(obj);
 	success_Item.addEventListener('click', toggleSuccessItem);
+	if(isChecked){
+		success_Item.checked = true;
+	}
 	
 	let item_text = document.createTextNode(item);
 	
@@ -183,35 +174,50 @@ function add_item(){
 	colums.forEach(function(item,index,array){
 		let td = document.createElement("td");
 		td.appendChild(item);
+		if(index==1){
+			if(isChecked){
+				td.setAttribute("class", "su_text");
+			}else{
+				td.setAttribute("class", "text");
+			}
+		}
 		tr.appendChild(td);
 	});
+}
+
+
+let success_Element = document.getElementsByName("success");
+let pencil_Element = document.getElementsByName("pencil");
+let delete_Element = document.getElementsByName("delete");
+
+setElemetsFunction(success_Element,toggleSuccessItem);
+setElemetsFunction(pencil_Element,updateItem);
+setElemetsFunction(delete_Element,deleteItem);
+
+function setElemetsFunction(Elemets,Item){
+	Array.prototype.forEach.call(Elemets, function(el){
+		el.addEventListener('click',Item);
+	});
+}
+
+function add_item(){
+	let item = document.getElementById("item").value;
+	setItemAttribute("item_table",item,false)
 	
 
 	document.getElementById("item").value = "";
-	//setTableCookie(item_table);
-	//console.log(getCookie("item_table"));
-}
-
-function Save_data(){
-
+	Save_item();
 }
 
 function Save_item(){
-	let Item_Data = [setJsonData("item_table"), setJsonData("success_table")];
-	//setCookie("Item_Data",Item_Data);
-	//console.log(getCookie("Item_Data"));
-	
-	
-	setStroage("localStorage", "Item_Data", Item_Data);
-	console.log(getStroage("localStorage","Item_Data"));
-	
-	//setSessionStroage(getCookie("Item_Data"));
-	//console.log(getSessionStroage("Item_Data"));
+	let Item_Data = [setJsonData("item_table","N"), setJsonData("success_table","Y")];
+	setCookie("Item_Data",JSON.stringify(Item_Data));
+	console.log(Item_Data);
 }
 
-function setJsonData(table_name){
+function setJsonData(table_name,status){
 	let table = document.getElementById(table_name);
-	let json = {"table":table_name, "item_array":[]};
+	let json = {"item_array":[], "isSuccess":status};
 	Array.prototype.forEach.call(table.rows, function(el,i){
 		if(i!=0){
 			json.item_array.push(el.cells[1].innerHTML);
@@ -251,6 +257,7 @@ function setTableRowTextHtml(item_td,text){
 		let td_childNode = item_td.childNodes[0];
 		item_td.innerHTML =  td_childNode.value;
 		item_td.setAttribute("class",text);
+		Save_item();
 	}else{
 		item_td.innerHTML = '<input type="textbox" class="form-control" id="update" name="update" value="'+item_td.innerText+'"/>';
 		item_td.setAttribute("class","edit");
@@ -261,6 +268,7 @@ function deleteItem(){
 	let td = this.parentNode;
 	let tr = td.parentNode;
 	tr.parentNode.removeChild(tr);
+	Save_item();
 }
 
 function toggleSuccessItem(){
@@ -281,6 +289,7 @@ function toggleSuccessItem(){
 	}
 	
 	list_table.appendChild(tr);
+	Save_item();
 }
 </script>
 </html>

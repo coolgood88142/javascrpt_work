@@ -6,20 +6,8 @@ function setCookie(name,value){
 }
 
 function getCookie(name){
-	var name = name + "=";
-	var ca = document.cookie.split(';');
-	for(var i = 0; i <ca.length; i++) {
-		var c = ca[i];
-			while (c.charAt(0) == ' ') {
-			c = c.substring(1);
-		}	
-		if (c.indexOf(name) == 0) {
-		return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-	//let arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
-	//if (arr != null)return unescape(arr[2]); return null;
+	let arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+	if (arr != null)return unescape(arr[2]); return null;
 }
 
 function delCookie(name){
