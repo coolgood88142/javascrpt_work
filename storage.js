@@ -1,11 +1,23 @@
-function setStroage(stroage,name,value){
-	localStorage.setItem(name,value);
+function setStroage(name,value,isLocal){
+	if(isLocal){
+		localStorage.setItem(name,value);
+	}else{
+		sessionStorage.setItem(name,value);
+	}
 }
 
-function getStroage(stroage,name){
-  return localStorage.getItem(name);
+function getStroage(name,isLocal){
+	if(isLocal){
+		return localStorage.getItem(name);
+	}else{
+		return sessionStorage.getItem(name);
+	}
 }
 
-function delStroagename(stroage,name){
-	localStorage.removeItem(name);
+function delStroagename(name,isLocal){
+	if(isLocal){
+		localStorage.removeItem(name);
+	}else{
+		sessionStorage.removeItem(name);
+	}
 }

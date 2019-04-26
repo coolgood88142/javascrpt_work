@@ -129,18 +129,21 @@
 window.onload=getTableData;
 function getTableData(){
 	let table_data = JSON.parse(getCookie("Item_Data"));
-	table_data.forEach(function(data,index,array){
-		let table = "item_table";
-		let isChecked = false;
-		if(data.isSuccess == 'Y'){
-			table = "success_table";
-			isChecked = true;
-		}
-		
-		data.item_array.forEach(function(item,index,array){
-			setItemAttribute(table,item,isChecked);
+	//let table_data = JSON.parse(getStroage("Item_Data",true));
+	if(table_data!=null){
+		table_data.forEach(function(data,index,array){
+			let table = "item_table";
+			let isChecked = false;
+			if(data.isSuccess == 'Y'){
+				table = "success_table";
+				isChecked = true;
+			}
+			
+			data.item_array.forEach(function(item,index,array){
+				setItemAttribute(table,item,isChecked);
+			});
 		});
-	});
+	}
 }
 
 function setItemAttribute(table,item,isChecked){
@@ -212,7 +215,7 @@ function add_item(){
 function Save_item(){
 	let Item_Data = [setJsonData("item_table","N"), setJsonData("success_table","Y")];
 	setCookie("Item_Data",JSON.stringify(Item_Data));
-	console.log(Item_Data);
+	//setStroage("Item_Data",JSON.stringify(Item_Data),true);
 }
 
 function setJsonData(table_name,status){
