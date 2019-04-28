@@ -70,7 +70,7 @@
 							<input type="textbox" class="form-control" id="item" name="item" />
 						</div>
 						<div style="text-align:right;">
-							<input type="button" id="add" class="btn btn-success" value="Go" onClick="add_item()">
+							<input type="button" id="add" class="btn btn-success" value="Go" onClick="addItem()">
 						</div>
 					</div>
 					<div class="card bg-light text-secondary shadow p-4 mb-4 bg-white">
@@ -203,16 +203,16 @@ function setElemetsFunction(Elemets,Item){
 	});
 }
 
-function add_item(){
+function addItem(){
 	let item = document.getElementById("item").value;
 	setItemAttribute("item_table",item,false)
 	
 
 	document.getElementById("item").value = "";
-	Save_item();
+	saveItem();
 }
 
-function Save_item(){
+function saveItem(){
 	let Item_Data = [setJsonData("item_table","N"), setJsonData("success_table","Y")];
 	setCookie("Item_Data",JSON.stringify(Item_Data));
 	//setStroage("Item_Data",JSON.stringify(Item_Data),true);
@@ -260,7 +260,7 @@ function setTableRowTextHtml(item_td,text){
 		let td_childNode = item_td.childNodes[0];
 		item_td.innerHTML =  td_childNode.value;
 		item_td.setAttribute("class",text);
-		Save_item();
+		saveItem();
 	}else{
 		item_td.innerHTML = '<input type="textbox" class="form-control" id="update" name="update" value="'+item_td.innerText+'"/>';
 		item_td.setAttribute("class","edit");
@@ -271,7 +271,7 @@ function deleteItem(){
 	let td = this.parentNode;
 	let tr = td.parentNode;
 	tr.parentNode.removeChild(tr);
-	Save_item();
+	saveItem();
 }
 
 function toggleSuccessItem(){
@@ -292,7 +292,7 @@ function toggleSuccessItem(){
 	}
 	
 	list_table.appendChild(tr);
-	Save_item();
+	saveItem();
 }
 </script>
 </html>
