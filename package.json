@@ -2,9 +2,9 @@
   "name": "javascript_work",
   "version": "1.0.0",
   "description": "this is javascript work",
-  "main": "index.html",
+  "main": "index.js",
   "scripts": {
-	  "start" : "index.html",
+	"start" : "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "watch": "webpack --watch --mode development"
